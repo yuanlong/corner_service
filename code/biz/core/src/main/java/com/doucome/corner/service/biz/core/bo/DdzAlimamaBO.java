@@ -125,6 +125,7 @@ public class DdzAlimamaBO implements DisposableBean {
 					throw new Exception("---commissionRate can't login alimama");
 				}
 				alimamaClients.put(loginClient);
+				alimamaLogger.error("login succ " + i);
 			}
 		} catch (Exception e) {
 			alimamaLogger.error("---init alimama login fail", e);
