@@ -5,15 +5,15 @@
 
 	<parent>
 
-		<groupId>com.doucome.corner_service</groupId>
-		<artifactId>corner_service.all</artifactId>
+		<groupId>com.doucome.cornerservice</groupId>
+		<artifactId>cornerservice.all</artifactId>
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 
 	</parent>
 
-	<groupId>com.doucome.corner_service</groupId>
-	<artifactId>corner_service.templates</artifactId>
+	<groupId>com.doucome.cornerservice</groupId>
+	<artifactId>cornerservice.templates</artifactId>
 	<packaging>jar</packaging>
 	<name>templates</name>
 	<description>Auto converted POM for templates</description>

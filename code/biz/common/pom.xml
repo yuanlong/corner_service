@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.doucome.corner_service</groupId>
-		<artifactId>corner_service.all</artifactId>
+		<groupId>com.doucome.cornerservice</groupId>
+		<artifactId>cornerservice.all</artifactId>
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
-	<groupId>com.doucome.corner_service</groupId>
-	<artifactId>corner_service.biz.common</artifactId>
+	<groupId>com.doucome.cornerservice</groupId>
+	<artifactId>cornerservice.biz.common</artifactId>
 	<packaging>jar</packaging>
 	<name>biz.common</name>
 
