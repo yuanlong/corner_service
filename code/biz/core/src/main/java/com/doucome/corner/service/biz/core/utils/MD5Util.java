@@ -2,7 +2,7 @@ package com.doucome.corner.service.biz.core.utils;
 
 public class MD5Util {
 
-    private static final String prefixKey = "D0UCOME";
+	private static final String prefixKey = "D0UCOME";
 
     private static final byte[] PADDING = { -128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -40,18 +40,15 @@ public class MD5Util {
 
     private static final int    S44     = 21;
 
-    // 下面 3 个成员是 MD5 计算过程中用到的 3 个核心数据，在原始的 C 实现中被定义 MD5_CTX 结构
     private long[]              state   = new long[4]; // state(ABCD)
 
     private long[]              count   = new long[2]; // number of bits, modulo 2^64
 
     private byte[]              buffer  = new byte[64]; // input buffer
 
-    // digestHexStr MD5 的最新一次计算结果的十六进制 ASCII 表示
 
     private String              digestHexStr;
 
-    // digest 是最新一次计算结果的二进制内部表示
     private byte[]              digest  = new byte[16];
 
     /**
@@ -338,7 +335,7 @@ public class MD5Util {
         return s;
     }
 
-    // 获取md5 值
+    // ��ȡmd5 ֵ
     public static String getMD5(String value) {
         String source = prefixKey+value;
         MD5Util md5 = new MD5Util();
@@ -354,5 +351,4 @@ public class MD5Util {
     // System.out.println(md5.getMD5ofString("abc".getBytes(), "abc".getBytes().length));
     // System.out.println("900150983CD24FB0D6963F7D28E17F72".length());
     // }
-
 }

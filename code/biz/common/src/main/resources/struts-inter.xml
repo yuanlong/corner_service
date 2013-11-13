@@ -13,6 +13,16 @@
 			<interceptor-ref name="doucomeDefaultStack" />
 			<result name="success" type="json2"></result>
 		</action>
+
+		<action name="commrate_ajax" class="com.doucome.corner.service.web.inter.action.ajax.CommissionAction">
+			<interceptor-ref name="doucomeDefaultStack" />
+			<result name="success" type="json2"></result>
+		</action>
+		
+		<action name="refresh_ajax" class="com.doucome.corner.service.web.inter.action.ajax.RefreshAction">
+			<interceptor-ref name="doucomeDefaultStack" />
+			<result name="success" type="json2"></result>
+		</action>
 		
 	</package>
 </struts>

@@ -8,7 +8,6 @@ import sun.misc.BASE64Decoder;
 
 public class HmacMD5 {
 	/**
-	 * MAC算法可选以下多种算法
 	 * 
 	 * <pre>
 	 * HmacMD5
@@ -21,7 +20,6 @@ public class HmacMD5 {
 	public static final String KEY_MAC = "HmacMD5";
 
 	/**
-	 * BASE64解密
 	 * 
 	 * @param key
 	 * @return
@@ -60,8 +58,7 @@ public class HmacMD5 {
 		}
 	}
 
-	public static String byte2hex(byte[] b) // 二行制转字符串
-	{
+	public static String byte2hex(byte[] b) {
 		String hs = "";
 		String stmp = "";
 		for (int n = 0; n < b.length; n++) {
