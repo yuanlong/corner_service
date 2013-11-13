@@ -12,5 +12,5 @@
 	default-autowire="byName">
 	
 	
-	<bean id="ddzAlimamaBO" class="com.doucome.corner.service.biz.core.bo.DdzAlimamaBO" />
+	<!--bean id="ddzAlimamaBO" class="com.doucome.corner.service.biz.core.bo.DdzAlimamaBO" /-->
 </beans>

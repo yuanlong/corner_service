@@ -143,6 +143,7 @@ public class DdzAlimamaBO implements DisposableBean {
 				alimamaClients.put(loginClient);
 			}
 		} catch (Exception e) {
+			alimamaLogger.error("---init alimama login fail", e);
 			throw new  RuntimeException(e);
 		}
 	}
@@ -454,8 +455,7 @@ public class DdzAlimamaBO implements DisposableBean {
 		return null;
 	}
 	
-	/**
-	 * ��ȡһ����½����������httpclient.
+	/**.
 	 * @param connManager
 	 * @param userName
 	 * @param password
