@@ -51,6 +51,14 @@
         </layout>
     </appender>
     
+    <appender name="alimama-appender" class="org.apache.log4j.RollingFileAppender">
+        <param name="file" value="${loggingRoot}/sys/logs/alimama-log.log"/>
+        <param name="maxFileSize" value="10MB"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%X{requestURIWithQueryString}] %-5p %c{2} - %m%n"/>
+        </layout>
+    </appender>
+    
     
     <logger name="signin-log" additivity="true">
     	<appender-ref ref="signin-log-appender"/>
@@ -60,6 +68,10 @@
     <logger name="com.doucome.corner.service.biz.common.monitor.PerformanceInterceptor" additivity="true">
     	<appender-ref ref="performance-log-appender"/>
     	<level value="warn"></level>
+    </logger>
+    <logger name="alimama-log" additivity="true">
+    	<appender-ref ref="alimama-appender"/>
+    	<level value="error"></level>
     </logger>
   
     <!-- ===================================================================== -->
