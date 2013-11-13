@@ -87,22 +87,6 @@ public class DdzAlimamaBO implements DisposableBean {
 										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
 										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
 										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
 										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"}};
 									
 	static {
@@ -187,9 +171,7 @@ public class DdzAlimamaBO implements DisposableBean {
 				int statusCode = response.getStatusLine().getStatusCode();
 				if (statusCode != 200) {
 					alimamaLogger.error("---fail, request commission form response status: " + statusCode + "/" + numIid);
-					//��������ʧ�ܣ��첽���µ�¼��������
 					logoutAlimama(httpClient);
-					//����Ϊ�գ����������
 					loginInstance = null;
 					new Thread() {
 						@Override
@@ -273,7 +255,7 @@ public class DdzAlimamaBO implements DisposableBean {
 		for (int i = 0; i < 80; i++) {
 			try {
 				alimamaClient = pollQueue(2000);
-				if (alimamaClient == null && alimamaClients.size() < 80) {
+				if (alimamaClient == null && alimamaClients.size() < 60) {
 					int idx = new Random(System.currentTimeMillis()).nextInt(loginInfos.length);
 					alimamaClient = loginAlimama(connManager, loginInfos[idx][0], loginInfos[idx][1], loginInfos[idx][2],
 					                            loginInfos[idx][3], loginInfos[idx][4], loginInfos[idx][5]);
@@ -281,7 +263,12 @@ public class DdzAlimamaBO implements DisposableBean {
 						continue;
 					}
 				}
+				if (alimamaClient == null) {
+					alimamaLogger.error("---refresh fail, can't get client from queue");
+					continue;
+				}
 				if (!alimamaClient.needRefresh()) {
+					alimamaLogger.error("---refresh none, client is active");
 					break;
 				}
 				int statusCode = 0;
@@ -291,31 +278,22 @@ public class DdzAlimamaBO implements DisposableBean {
 					response = alimamaClient.getHttpClient().execute(getReq);
 					statusCode = response.getStatusLine().getStatusCode();
 				} catch (Exception e) {
-					alimamaLogger.error("---refresh exception", e);
+					alimamaLogger.error("---refresh exception, request url fail", e);
 				} finally {
 					consumeResponse(response);
 				}
 				if (statusCode != 200) {
-					try {
-						//��ǰclient��ʧЧ�����³�ʼ��һ���������.
-						int idx = new Random(System.currentTimeMillis()).nextInt(loginInfos.length);
-						alimamaClient = loginAlimama(connManager, loginInfos[idx][0], loginInfos[idx][1], loginInfos[idx][2],
-						                            loginInfos[idx][3], loginInfos[idx][4], loginInfos[idx][5]);
-						if (alimamaClient != null) {
-							HttpGet getReq = new HttpGet(destUrl);
-							response = alimamaClient.getHttpClient().execute(getReq);
-							if (statusCode != 200) {
-								alimamaClient = null;
-								alimamaLogger.error("---refresh fail, dest page response code: " + response.getStatusLine().getStatusCode());
-							}
-						} else {
-							alimamaLogger.error("---refresh fail, with relogin fail");
-						}
-					} catch (Exception e) {
-						alimamaLogger.error("---refresh exception", e);
-					} finally {
-						consumeResponse(response);
+					alimamaClient = null;
+					int idx = new Random(System.currentTimeMillis()).nextInt(loginInfos.length);
+					alimamaClient = loginAlimama(connManager, loginInfos[idx][0], loginInfos[idx][1], loginInfos[idx][2],
+					                            loginInfos[idx][3], loginInfos[idx][4], loginInfos[idx][5]);
+					if (alimamaClient == null) {
+						alimamaLogger.error("---refresh fail, inactive httpclient relogin fail");	
+					} else {
+						alimamaLogger.error("---refresh succ with relogin");	
 					}
+				} else {
+					alimamaLogger.error("---refresh succ");	
 				}
 			} finally {
 				putQueue(alimamaClient);
@@ -324,7 +302,7 @@ public class DdzAlimamaBO implements DisposableBean {
 		alimamaLogger.error("---refresh consume: " + (System.currentTimeMillis() - time1));
 	}
 	
-	public AlimamaLoginHttpClient pollQueue(long millTime) {
+	private AlimamaLoginHttpClient pollQueue(long millTime) {
 		try {
 			return alimamaClients.poll(millTime, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException e) {
@@ -333,7 +311,7 @@ public class DdzAlimamaBO implements DisposableBean {
 		return null;
 	}
 	
-	public boolean putQueue(AlimamaLoginHttpClient alimamaClient) {
+	private boolean putQueue(AlimamaLoginHttpClient alimamaClient) {
 		if (alimamaClient != null) {
 			try {
 				alimamaClient.refreshTimestamp();
@@ -668,8 +646,20 @@ public class DdzAlimamaBO implements DisposableBean {
 	}
 	
 	public static void main(String[] args) {
+//		final String[] numIids = new String[] {"35258234134", "19753582926", "21550011680", "35303350378", "12676757591",
+//				"19668897067", "26990196908", "16354643412", "27619368894", "22612323893"};
+//		final String[] titles = new String[] {"2013秋同步款 HIM汉崇正品 流行时尚男士小脚牛仔裤 70539202BL",
+//				"強菲斯二代 德國進口原絲 50米台釣競技魚線子線主線線 釣線批發",
+//				"专利 卸力8字环 八字环 连接环连接器转环 垂钓小配件缓冲器",
+//				"【11-1】速寫男裝croquis 時尚大氣搖滾羽絨服 90878A3",
+//				"安的古尼2013秋裝新款韓版短款修身機車女士皮衣PU大碼外套",
+//				"【天猫超市】Saky/舒客 白牙素牙膏超强脱渍 120g 美白牙齿去烟渍",
+//				"無漆環保創意辦公簡易書架桌面桌上小書架宜家置物架收納架可水洗",
+//				"【天貓超市】立白洗衣液全效護理洗衣液洗護合一2kg不傷手不傷衣",
+//				"秋款格子襯衫女長袖韓版複古文藝棉麻學院風寬松打底襯衣森女日系",
+//				"嫣然之姿2013秋冬通勤複古撞色新款包臀修身高檔針織羊毛連衣裙女"};
 		DdzAlimamaBO ddzLoginBO = new DdzAlimamaBO();
-//		BigDecimal commRate = ddzLoginBO.getItemCommissionRate("19753582926", "����˹���� ���M��ԭ�z 50��̨ី����~���Ӿ������� ើ���l", 0);
+//		BigDecimal commRate = ddzLoginBO.getItemCommissionRate("35258234134", "2013秋同步款 HIM汉崇正品 流行时尚男士小脚牛仔裤 70539202BL", 0);
 //		System.out.println(commRate);
 		DdzTbItemModel item = ddzLoginBO.getTbItemInfo("35303350378", DdzTbItemSourceEnum.TMALL);
 		if (item != null) {

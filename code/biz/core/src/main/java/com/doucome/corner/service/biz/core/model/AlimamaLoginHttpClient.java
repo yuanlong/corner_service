@@ -9,7 +9,7 @@ import org.apache.http.client.HttpClient;
  */
 public class AlimamaLoginHttpClient {
 	
-	private static final long REFRESH_INTERVAL = 20L * 60L * 1000L;
+	private static final long REFRESH_INTERVAL = 5L * 60L * 1000L;
 	
 	private HttpClient httpClient;
 	
@@ -41,6 +41,6 @@ public class AlimamaLoginHttpClient {
 	}
 	
 	public boolean needRefresh() {
-		return (System.currentTimeMillis() - latestTimestamp) > 10;//REFRESH_INTERVAL;
+		return (System.currentTimeMillis() - latestTimestamp) > REFRESH_INTERVAL;
 	}
 }

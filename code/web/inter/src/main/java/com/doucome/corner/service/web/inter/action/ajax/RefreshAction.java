@@ -21,7 +21,7 @@ public class RefreshAction extends InterBasicAction  {
 	@Override
 	public String execute() throws Exception {
 		//destUrl = StringUtils.isNotEmpty(destUrl)? destUrl: "http://u.alimama.com/membersvc/index.htm"
-		ddzAlimamaBO.refreshLoginStatus("http://u.alimama.com/membersvc/index.htm");
+		ddzAlimamaBO.refreshLoginStatus("http://u.alimama.com/union/myunion/myOverview.htm");
 		return SUCCESS;
 	}
 
