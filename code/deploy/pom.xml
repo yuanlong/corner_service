@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+
+		<groupId>com.doucome.corner_service</groupId>
+		<artifactId>corner_service.all</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+
+	</parent>
+
+	<groupId>com.doucome.corner_service</groupId>
+	<artifactId>corner_service.deploy</artifactId>
+	<packaging>jar</packaging>
+	<name>deploy</name>
+	<description>Auto converted POM for deploy</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.doucome.corner_service</groupId>
+			<artifactId>corner_service.web.common</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.doucome.corner_service</groupId>
+			<artifactId>corner_service.web.inter</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.doucome.corner_service</groupId>
+			<artifactId>corner_service.templates</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<id>copy-war</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.doucome.corner_service</groupId>
+									<artifactId>corner_service.bundle.war</artifactId>
+									<version>${pom.version}</version>
+									<type>war</type>
+									<overWrite>true</overWrite>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${release_directory}</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<!-- Release profile will just copy war and package resource files to target/release, 
+			without configured. -->
+		<!-- Appops should take the responsibility to configure them before deploying 
+			to production server -->
+		<profile>
+			<id>release</id>
+			<activation>
+				<!--activeByDefault>true</activeByDefault -->
+				<property>
+					<name>env</name>
+					<value>release</value>
+				</property>
+			</activation>
+			<properties>
+				<release_directory>${project.parent.build.directory}</release_directory>
+			</properties>
+			<build>
+				<plugins>
+					<!-- Tar script/conf/template resources -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>assembly-deploy-package</id>
+								<phase>package</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<jar destfile="${release_directory}/web-deploy.jar">
+											<zipfileset dir="${project.basedir}/conf/META-INF"
+												prefix="META-INF" />
+											<zipfileset dir="${project.basedir}">
+												<include name="htdocs/**" />
+												<include name="templates/**" />
+												<include name="conf/**" />
+												<exclude name="conf/META-INF/**" />
+											</zipfileset>
+											<zipfileset dir="${project.basedir}" filemode="755">
+												<include name="bin/**" />
+											</zipfileset>
+										</jar>
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- Dev profile will configure all files and copy them to target/dev, 
+			for testing purpose -->
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env</name>
+					<value>!release</value>
+				</property>
+			</activation>
+			<properties>
+				<release_directory>${project.build.directory}/dev</release_directory>
+			</properties>
+			<build>
+				<plugins>
+					<!-- Copy script/conf/template resources -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>prepare-deploy-package</id>
+								<phase>package</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<!-- Configured Artifacts -->
+										<mkdir dir="${release_directory}/web-deploy" />
+										<copy todir="${release_directory}/web-deploy">
+											<fileset dir="${project.basedir}">
+												<include name="htdocs/**" />
+												<include name="conf/**" />
+												<include name="bin/**" />
+											</fileset>
+										</copy>
+										<chmod dir="${release_directory}/web-deploy/bin" perm="755"
+											includes="**" />
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- do auto config for integration test -->
+					<plugin>
+						<groupId>com.doucome.maven.plugins</groupId>
+						<artifactId>maven-autoconf-plugin</artifactId>
+						<version>0.4.22</version>
+						<executions>
+							<execution>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>config</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<destFiles>
+								<destFile>${release_directory}/web-deploy</destFile>
+								<destFile>${release_directory}/cornerservice.bundle.war-${pom.version}.war</destFile>
+							</destFiles>
+							<includeDescriptorPatterns>
+								<!-- intl-site flavor -->
+								<includeDescriptorPattern>autoconf/auto-config.xml</includeDescriptorPattern>
+								<!-- china-site flavor -->
+								<includeDescriptorPattern>conf/META-INF/autoconf/auto-config.xml</includeDescriptorPattern>
+								<includeDescriptorPattern>META-INF/autoconf/auto-config.xml</includeDescriptorPattern>
+							</includeDescriptorPatterns>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>dom4j</groupId>
+								<artifactId>dom4j</artifactId>
+								<version>1.6.1</version>
+							</dependency>
+							<dependency>
+								<groupId>commons-io</groupId>
+								<artifactId>commons-io</artifactId>
+								<version>1.4</version>
+							</dependency>
+							<dependency>
+								<groupId>commons-lang</groupId>
+								<artifactId>commons-lang</artifactId>
+								<version>2.6</version>
+							</dependency>
+							<dependency>
+								<groupId>commons-logging</groupId>
+								<artifactId>commons-logging</artifactId>
+								<version>1.1.1</version>
+							</dependency>
+							<dependency>
+								<groupId>commons-digester</groupId>
+								<artifactId>commons-digester</artifactId>
+								<version>1.8</version>
+							</dependency>
+							<dependency>
+								<groupId>commons-collections</groupId>
+								<artifactId>commons-collections</artifactId>
+								<version>3.2</version>
+							</dependency>
+							<dependency>
+								<groupId>commons-beanutils</groupId>
+								<artifactId>commons-beanutils</artifactId>
+								<version>1.8.0</version>
+							</dependency>
+							<dependency>
+								<groupId>commons-httpclient</groupId>
+								<artifactId>commons-httpclient</artifactId>
+								<version>3.1</version>
+							</dependency>
+							<dependency>
+								<groupId>commons-codec</groupId>
+								<artifactId>commons-codec</artifactId>
+								<version>1.3</version>
+							</dependency>
+							<dependency>
+								<groupId>oro</groupId>
+								<artifactId>oro</artifactId>
+								<version>2.0.8</version>
+							</dependency>
+							<dependency>
+								<groupId>dom4j</groupId>
+								<artifactId>dom4j</artifactId>
+								<version>1.4</version>
+							</dependency>
+							<dependency>
+								<groupId>org.apache.velocity</groupId>
+								<artifactId>velocity</artifactId>
+								<version>1.5</version>
+							</dependency>
+							<dependency>
+								<groupId>com.jcraft</groupId>
+								<artifactId>jsch</artifactId>
+								<version>0.1.38</version>
+							</dependency>
+							<dependency>
+								<groupId>org.codehaus.groovy</groupId>
+								<artifactId>groovy-all</artifactId>
+								<version>2.1.2</version>
+							</dependency>
+							<dependency>
+								<groupId>commons-vfs</groupId>
+								<artifactId>commons-vfs</artifactId>
+								<version>1.0</version>
+							</dependency>
+							<dependency>
+								<groupId>org.codehaus.plexus</groupId>
+								<artifactId>plexus-container-default</artifactId>
+								<version>1.5.5</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+
+			</build>
+		</profile>
+	</profiles>
+</project>

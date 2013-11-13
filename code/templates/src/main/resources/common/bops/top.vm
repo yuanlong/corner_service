@@ -1,0 +1,19 @@
+<table border=0 width="100%" #AEC6DF CELLPADDING="0" CELLSPACING="0" height="31" bgcolor="#e8e8e8"   style="filter: Alpha(Opacity=100, FinishOpacity=0, Style=1, StartX=0, StartY=50, FinishX=100, FinishY=100)">
+	<tr bgcolor="#3366CC"> 
+		<td width="31%"  height="36" bgcolor="#3366CC">
+			###<img src="$bopsImageServer/images/title_v1.gif" width="199" height="30">
+		</td>
+		<td align="right" height="36" width="69%" bgcolor="#3366CC">&nbsp;</td>
+	</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" height="8">
+	<tr bgcolor="#e8e8e8"> 
+		<td width="60%">
+			#if($bopsAuthz && $bopsAuthz.isLogin())
+				Hi,$bopsAuthz.adminId! 
+				<a href="${env.bopsRoot}/bops/logout.htm">退出</a>
+			#end
+		</td>
+		<td width="40%">&nbsp;&nbsp;</td>
+	</tr>
+</table>

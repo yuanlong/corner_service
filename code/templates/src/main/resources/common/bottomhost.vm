@@ -1,0 +1,3 @@
+<div style="color:#fff;text-align:center;margin-top:-20px;">
+	$!{systemUtils.HostInfo.Name}&nbsp;Server is OK
+</div>

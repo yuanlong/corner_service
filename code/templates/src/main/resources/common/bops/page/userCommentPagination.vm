@@ -1,0 +1,18 @@
+<div class="pagination" id="pagination">
+	#parse("/common/bops/_pagination.vm")
+	<form method="get" action="$searchUrl" id="form_page">
+		<input type="hidden" name="id" value="$!id" />
+		<input type="hidden" name="toCommentId" value="$!toCommentId" />
+		<input type="hidden" name="toUserName" value="$!toUserName" />
+		<input type="hidden" name="userName" value="$!userName" />
+		<input type="hidden" name="activityId" value="$!activityId" />
+		<input type="hidden" name="newsId" value="$!newsId" />
+		<input type="hidden" name="type" value="$!type" />
+		<input type="hidden" name="status" value="$!status" />
+		
+		<div class="page-op">
+    		<span class="total-page">共 $totalPages 页</span>第<input type="text" name="page" value="$!curPage">页
+    		<input type="submit" value="确定">
+    	</div>
+    </form>
+</div>

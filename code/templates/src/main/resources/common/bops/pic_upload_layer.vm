@@ -1,0 +1,27 @@
+<div id="maskLayer"></div>
+<div id="pictureUploadLayer" class="pic-upload-layer dd-hide">
+    <div class="wrap">
+	    <div class="header" style="">
+		    <span>上传图片</span>
+			<a class="close-btn" href="javascript:;"></a>
+		</div>
+		<div class="content">
+			<div class="url-pic">
+				<form id="urlPicUploadForm" method="post" action="${env.bopsRoot}/bops/remote/upload_url_image.htm">
+				    <div class="tip"><span>上传网络图片</span></div>
+				    <div class="tip"><span class="error"></span></div>
+					<input class="picture-url" type="text" name="pictureUrl"/>
+					<input class="confirm-btn" type="submit" value="上传"/>
+				</form>
+			</div>
+			<div class="local-pic">
+				<form id="localPicUploadForm" method="post" action="${env.bopsRoot}/bops/remote/upload_local_image.htm" enctype="multipart/form-data">
+				    <div class="tip"><span>上传本地图片</span></div>
+				    <div class="tip"><span class="error"></span></div>
+					<input class="picture" type="file" name="picture"/>
+					<input class="confirm-btn" type="submit" value="上传"/>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

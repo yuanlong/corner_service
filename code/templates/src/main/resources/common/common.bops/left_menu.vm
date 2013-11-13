@@ -1,0 +1,59 @@
+
+<ul class="left_menu">
+    <p><a href="">BOPS管理系统</a></p>
+	<li><a href="javascript:">Back office process system</a>
+    	<ul>
+    		<li id="cacheManagement"><a href="${env.bopsRoot}/bops/cache_management.htm" >缓存管理</a></li>
+			<li id="bannerManagement"><a href="${env.bopsRoot}/bops/banner_management.htm" >BANNER管理</a></li>
+			<li id="smsLog"><a href="${env.bopsRoot}/bops/log/sms_log_list.htm" >短信日志</a></li>
+			<li id="mailLog"><a href="${env.bopsRoot}/bops/log/mail_log_list.htm" >邮件日志</a></li>
+			<li id="mailLog"><a href="${env.bopsRoot}/bops/log/task_schedule_list.htm" >任务调度</a></li>
+    	</ul>
+    </li>
+	
+	<li><a href="javascript:">点点折</a>
+		<ul>
+            <li id="taokeReport"><a href="${env.bopsRoot}/bops/zhe/taoke_report_settle.htm" >淘客报表结算</a></li>
+			<li id="taokeReportList"><a href="${env.bopsRoot}/bops/zhe/taoke_report_list.htm" >淘客报表</a></li>
+			<li id="ddzConsumeDetailList"><a href="${env.bopsRoot}/bops/zhe/consume_detail_list.htm" >明细记录</a></li>
+			<li id="jfbSettleRecord"><a href="${env.bopsRoot}/bops/zhe/jfb_settle_record_list.htm" >集分宝打款记录</a></li>
+			<li id="taokeReportTask"><a href="${env.bopsRoot}/bops/zhe/taoke_report_task.htm" >淘宝客报表任务日历</a></li>
+			<li id="accountList"><a href="${env.bopsRoot}/bops/zhe/account_list.htm" >支付宝账号查询</a></li>
+			<li id="taokeConvert"><a href="${env.bopsRoot}/bops/zhe/taoke_convert.htm" >淘客地址转换</a></li>
+			<li id="taokeOrderUpload"><a href="${env.bopsRoot}/bops/zhe/taoke_order_logs.htm?type=UP">阿里妈妈订单同步</a></li>
+		</ul>
+	</li>
+	
+	<li><a href="javascript:">豆蔻</a>
+		<ul>
+			<li id="itemList"><a href="${env.bopsRoot}/bops/dcome/qq/item_list.htm?genWay=P" >商品维护</a></li>
+			<li id="categoryList"><a href="${env.bopsRoot}/bops/dcome/qq/category_list.htm" >类目维护</a></li>
+			<li id="exchange"><a href="${env.bopsRoot}/bops/dcome/prom/exchange_item_list.htm?exUserType=A" >积分兑换</a></li>
+			<li id="itemSearch"><a href="${env.bopsRoot}/bops/dcome/prom/search_log_list.htm?status=U" >用户搜索</a></li>
+			<li id="autoExchagne"><a href="${env.bopsRoot}/bops/dcome/prom/auto_exchange_list.htm?status=U" >自动兑换</a></li>
+			<li id="rateDetailList"><a href="${env.bopsRoot}/bops/dcome/prom/prom_award_list.htm" >中奖记录</a></li>
+			<li id="rateDetailList"><a href="${env.bopsRoot}/bops/dcome/prom/spider_item_list.htm" >外部商品</a></li>
+		</ul>
+	</li>
+	<li><a href="javascript:">兑换</a>
+		<ul>
+			<li id="rateDetailList"><a href="${env.bopsRoot}/bops/dcome/qq/user_integral_record_list.htm" >积分记录</a></li>
+			<li id="rateDetailList"><a href="${env.bopsRoot}/bops/dcome/qq/exchange_approve_list.htm" >兑换记录</a></li>
+		</ul>
+	</li>
+	
+	<li><a href="javascript:">星座</a>
+		<ul>
+			<li id="rateDetailList"><a href="${env.bopsRoot}/bops/dcome/hs/topic_list.htm" >星话题</a></li>
+			<li id="rateDetailList"><a href="${env.bopsRoot}/bops/dcome/hs/daily_fate_list.htm" >日星座运势</a></li>
+			<li id="rateDetailList"><a href="${env.bopsRoot}/bops/dcome/hs/week_fate_list.htm" >周星座运势</a></li>
+			<li id="rateDetailList"><a href="${env.bopsRoot}/bops/dcome/hs/month_fate_list.htm" >月星座运势</a></li>
+		</ul>
+	</li>
+	<li><a href="javascript:">十道测试题</a>
+		<ul>
+			<li id="tsSubject"><a href="${env.bopsRoot}/bops/qq/app/subject_list.htm" >测试题</a></li>
+		</ul>
+	</li>
+
+</ul>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!--
+  - Log4j配置文件。
+  -
+  - 请使用专用的XML编辑器编辑此文件，以确保其符合log4j.dtd。
+  -
+  - @author
+ -->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- ===================================================================== -->
+    <!--  以下是appender的定义                                                 -->
+    <!-- ===================================================================== -->
+    
+        <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		      <param name="Target" value="System.out" />
+		      <param name="Threshold" value="debug" />
+		      <layout class="org.apache.log4j.PatternLayout">
+		         <param name="ConversionPattern" value="%d [%-5p](%C{2},%L) - %m%n" />
+		      </layout>
+	    </appender>
+    	
+     	<logger name="remoting" additivity="false">
+	    	<level value="fetal"></level>
+	    </logger>
+ 		<logger name="com.google.code.yanf4j.core.impl.AbstractController" additivity="false">
+	    	<level value="fetal"></level>
+	    </logger>
+	    <logger name="com.ibatis" additivity="true">
+	    	<level value="DEBUG" />
+	    </logger>
+	    <logger name="jakarta.JakartaCommonsLoggingImpl" additivity="true">
+	    	<level value="DEBUG" />
+	    </logger>
+	    <logger name="java.sql.Connection" additivity="true">
+	        <level value="DEBUG" />
+	    </logger>
+	    <logger name="java.sql.PreparedStatement" additivity="true">
+        <level value="DEBUG" />
+	        <appender-ref ref="CONSOLE" />
+	    </logger>
+	    <logger name="java.sql.ResultSet" additivity="true">
+	        <level value="DEBUG" />
+	        <appender-ref ref="CONSOLE" />
+	    </logger>
+    <!-- ===================================================================== -->
+    <!--  Root logger的定义                                                    -->
+    <!-- ===================================================================== -->
+    <root>
+        <level value="info"/>
+           <appender-ref ref="CONSOLE" />
+        <!-- <appender-ref ref="ASYNC" /> -->
+    </root>
+    
+</log4j:configuration>

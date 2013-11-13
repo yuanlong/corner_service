@@ -1,0 +1,18 @@
+<div class="pagination" id="pagination">
+	#parse("/common/bops/_pagination.vm")
+	<form method="get" action="$searchUrl" id="form_page">
+		<input type="hidden" name="id" value="$!id" />
+		<input type="hidden" name="categoryId" value="$!categoryId" />
+		<input type="hidden" name="keyword" value="$!keyword" />
+		<input ="hidden" name="isTop" value="$!isTop"/>
+		<input type="hidden"  name="gmtPublishStart" value="$!gmtPublishStartFmt"/>
+		<input type="hidden" name="gmtPublishEnd" value="$!gmtPublishEndFmt"/>
+		<input type="hidden"  name="orderColumn" value="$!orderColumn"/>
+		<input type="hidden" name="order" value="$!order"/>
+		
+		<div class="page-op">
+    		<span class="total-page">共 $totalPages 页</span>第<input type="text" name="page" value="$!curPage">页
+    		<input type="submit" value="确定">
+    	</div>
+    </form>
+</div>

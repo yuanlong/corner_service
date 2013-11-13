@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BOPS-ADMIN">
+	<typeAlias alias="TA-BOPS-ADMIN"
+		type="com.doucome.chaoexpo.biz.dal.dataobject.BopsAdminDO" />
+
+	<resultMap id="RM-BOPS-ADMIN" class="TA-BOPS-ADMIN">
+		<result property="id" column="ID" />
+		<result property="adminId" column="ADMIN_ID" jdbcType="VARCHAR" />
+		<result property="password" column="PASSWORD" jdbcType="VARCHAR" />
+		<result property="site" column="SITE" jdbcType="VARCHAR" />
+		<result property="gmtCreate" column="GMT_CREATE" jdbcType="TIMESTAMP" />
+		<result property="gmtModified" column="GMT_MODIFIED" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<select id="queryByAdminIdAndPass" resultMap="RM-BOPS-ADMIN">
+		SELECT
+			ID,ADMIN_ID,PASSWORD,SITE,GMT_CREATE,GMT_MODIFIED
+		FROM 
+			BOPS_ADMIN
+		WHERE 
+			ADMIN_ID = #adminId# 
+		AND 
+			PASSWORD = #password#
+		LIMIT 1
+	</select>
+</sqlMap>

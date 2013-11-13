@@ -1,0 +1,56 @@
+<div class="pic-detail-box">
+    <div class="top-box dd-l">
+	    <div class="picture dd-l big-pic">
+	    	#if ($!picModelList1 && $!picModelList1.size() > 0)
+	    		<img src="${env.pictureRoot}$!picModelList1[0].path" />
+	    	#else
+	    	    #if ($!picModelList2 && $!picModelList2.size() > 0)
+	    	    	<img src="${env.pictureRoot}$!picModelList2[0].path" />
+    	    	#end
+	    	#end
+		</div>
+        <div class="sum-pics">
+        	#if($!picName1)
+			    <div class="nav"><span>$!picName1</span></div>
+			#end
+			<ul class="pictures1">
+				#if($!picModelList1 && $!picModelList1.size() > 0)
+					#foreach($picModel in $picModelList1)
+				        <li class="sum-pic #if($velocityCount == 1)active#end">
+				        	<a href="javascript:;" class="small-pic">
+				        	    <img src="$!picModel.getSum('80x80')" width="40" height="40"/>
+				        	</a>
+				        	<a class="del-btn del-icon" href="javascript:;" title="删除"></a>
+				        	<input type="hidden" name="$picFieldName1" value="$!picModel.path"/>
+				        </li>
+				    #end
+				#end
+				<li class="add-pic">
+					<a class="add-pic-btn btn" href="javascript:;" title="新增图片" data-container-class="pictures1" data-field-name="$picFieldName1"></a>
+				</li>
+			</ul>
+		    #if($!picFieldName2)
+				<div class="split">&nbsp;</div>
+				#if($!picName2)
+				    <div class="nav"><span>$!picName2</span></div>
+				#end
+				<ul class="pictures2">
+					#if($!picModelList2 && $!picModelList2.size() > 0)
+						#foreach($picModel in $!picModelList2)
+					        <li class="sum-pic #if((!$!picModelList1 || $!picModelList1.size() == 0) && $velocityCount == 1)active#end">
+					        	<a href="javascript:;" class="small-pic">
+					        		<img src="$!picModel.getSum('80x80')" width="40" height="40" />
+					        	</a>
+					        	<a class="del-btn del-icon" href="javascript:;" title="删除"></a>
+					        	<input type="hidden" name="$picFieldName2" value="$!picModel.path"/>
+					        </li>
+					    #end
+					#end
+					<li class="add-pic">
+						<a class="add-pic-btn btn" href="javascript:;" title="新增图片" data-container-class="pictures2" data-field-name="$picFieldName2"></a>
+					</li>
+				</ul>
+			#end
+		</div>
+	</div>
+</div>

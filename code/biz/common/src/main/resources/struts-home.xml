@@ -1,0 +1,13 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="home" namespace="/home" extends="default">
+		
+	</package>
+	
+	<package name="home-remote" namespace="/home/remote/rest" extends="home">
+		
+	</package>
+</struts>

@@ -1,0 +1,33 @@
+
+#set ($title = $page.title)
+#if(!$title||$title=="") 
+	#set ($title="BOPS - back office process system")
+#end
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>$!title</title>
+	<style type="text/css">
+	
+		#parse("/common/bops/css.vm")
+	
+	</style>
+</head>
+<body> 
+	
+	#parse("/common/bops/top.vm")
+	$screen_content
+	#parse("/common/bops/bottom.vm")
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

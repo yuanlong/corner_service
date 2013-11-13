@@ -1,0 +1,324 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	
+	<package name="bops" namespace="/bops" extends="default">
+		<interceptors>
+			 <!-- Basic stack -->
+            <interceptor-stack name="bopsDefaultStack">
+				 <interceptor-ref name="doucomeDefaultStack" />
+				 <interceptor-ref name="setBopsContextInterceptor" />
+				 <interceptor-ref name="bopsAuthzContextInterceptor" />
+			 </interceptor-stack>
+			 <interceptor-stack name="bopsLoginStack">
+				 <interceptor-ref name="doucomeDefaultStack" />
+				 <interceptor-ref name="setBopsContextInterceptor" />
+			 </interceptor-stack>
+		</interceptors>
+		<action name="login" class="com.doucome.chaoexpo.web.bops.action.LoginAction">
+			<interceptor-ref name="defaultStack" />
+			<result name="success" type="velocity">/bops/login.vm</result>
+		</action>
+		<action name="do_login" class="com.doucome.chaoexpo.web.bops.action.LoginAction"  method="doLogin">
+			<interceptor-ref name="bopsLoginStack" />
+			<result name="success" type="redirect">/bops/index.htm</result>
+			<result name="error" type="velocity">/bops/login.vm</result>
+		</action>
+		<action name="logout" class="com.doucome.chaoexpo.web.bops.action.LoginAction"  method="doLogout">
+			<interceptor-ref name="bopsLoginStack" />
+			<result name="success" type="velocity">/bops/login.vm</result>
+		</action>
+		
+		<action name="index" class="com.doucome.chaoexpo.web.bops.action.IndexAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/index.vm</result>
+		</action>
+		<action name="news_list" class="com.doucome.chaoexpo.web.bops.action.NewsListAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/newsList.vm</result>
+		</action>
+		<action name="news" class="com.doucome.chaoexpo.web.bops.action.NewsAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/news.vm</result>
+		</action>
+		<action name="add_news" class="com.doucome.chaoexpo.web.bops.action.AddNewsAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="redirect">/bops/news.htm</result>
+		</action>
+		<action name="news_category_list" class="com.doucome.chaoexpo.web.bops.action.NewsCategoryListAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/newsCategoryList.vm</result>
+		</action>
+		<action name="news_category" class="com.doucome.chaoexpo.web.bops.action.NewsCategoryAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/newsCategory.vm</result>
+		</action>
+		<action name="add_news_category" class="com.doucome.chaoexpo.web.bops.action.AddNewsCategoryAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="redirect">/bops/news_category_list.htm</result>
+		</action>
+		<action name="activity_list" class="com.doucome.chaoexpo.web.bops.action.ActivityListAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/activityList.vm</result>
+		</action>
+		<action name="activity" class="com.doucome.chaoexpo.web.bops.action.ActivityAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/activity.vm</result>
+		</action>
+		<action name="add_activity" class="com.doucome.chaoexpo.web.bops.action.AddActivityAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="redirect">/bops/activity.htm</result>
+			<result name="input" type="velocity">/bops/activity.vm</result>
+		</action>
+		<action name="activity_signup_list" class="com.doucome.chaoexpo.web.bops.action.ActivitySignupListAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/activitySignupList.vm</result>
+		</action>
+		<action name="subject_list" class="com.doucome.chaoexpo.web.bops.action.SubjectListAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/subjectList.vm</result>
+		</action>
+		<action name="subject" class="com.doucome.chaoexpo.web.bops.action.SubjectAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/subject.vm</result>
+		</action>
+		<action name="add_subject" class="com.doucome.chaoexpo.web.bops.action.AddSubjectAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="redirect">/bops/subject.htm</result>
+		</action>
+		
+		<action name="app_recommend_list" class="com.doucome.chaoexpo.web.bops.action.AppRecommendListAction" >
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/appRecommendList.vm</result>
+		</action>
+		
+		<action name="add_app_recommend" class="com.doucome.chaoexpo.web.bops.action.QueryAppRecommendAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/appRecommend.vm</result>
+		</action>
+		
+		<action name="do_add_app_recommend" class="com.doucome.chaoexpo.web.bops.action.AddAppRecommendAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/success.vm</result>
+		</action>
+		
+		<action name="add_intro" class="com.doucome.chaoexpo.web.bops.action.QueryIntroAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/intro.vm</result>
+		</action>
+		
+		<action name="do_add_intro" class="com.doucome.chaoexpo.web.bops.action.AddIntroAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/success.vm</result>
+		</action>
+		
+		<action name="culture_list" class="com.doucome.chaoexpo.web.bops.action.CultureListAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/cultureList.vm</result>
+		</action>
+		
+		<action name="add_culture" class="com.doucome.chaoexpo.web.bops.action.QueryCultureAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/culture.vm</result>
+		</action>
+		
+		<action name="do_add_culture" class="com.doucome.chaoexpo.web.bops.action.AddCultureAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/success.vm</result>
+		</action>
+		
+		<action name="query_user_list" class="com.doucome.chaoexpo.web.bops.action.UserListAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/userList.vm</result>
+		</action>
+		
+		<action name="tushuo_list" class="com.doucome.chaoexpo.web.bops.action.TushuoListAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/tushuoList.vm</result>
+		</action>
+		
+		<action name="add_tushuo" class="com.doucome.chaoexpo.web.bops.action.QueryTushuoAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/tushuo.vm</result>
+		</action>
+		
+		<action name="do_add_tushuo" class="com.doucome.chaoexpo.web.bops.action.AddTushuoAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/success.vm</result>
+		</action>
+		
+		<action name="tushuo_cate_list" class="com.doucome.chaoexpo.web.bops.action.TushuoCateListAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/tushuoCateList.vm</result>
+		</action>
+		
+		<action name="add_tushuo_cate" class="com.doucome.chaoexpo.web.bops.action.QueryTushuoCateAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/tushuoCate.vm</result>
+		</action>
+		
+		<action name="do_add_tushuo_cate" class="com.doucome.chaoexpo.web.bops.action.AddTushuoCateAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/success.vm</result>
+		</action>
+		
+		<action name="query_banner_list" class="com.doucome.chaoexpo.web.bops.action.BannerListAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/bannerList.vm</result>
+		</action>
+		
+		<action name="banner" class="com.doucome.chaoexpo.web.bops.action.BannerAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/banner.vm</result>
+		</action>
+		
+		<action name="add_banner" class="com.doucome.chaoexpo.web.bops.action.AddBannerAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="redirect">/bops/banner.htm</result>
+		</action>
+		
+		<action name="query_user_comment_list" class="com.doucome.chaoexpo.web.bops.action.UserCommentListAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/userCommentList.vm</result>
+		</action>
+		
+		<action name="query_user_follow_list" class="com.doucome.chaoexpo.web.bops.action.UserFollowListAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/userFollowList.vm</result>
+		</action>
+		
+		<action name="device_push" class="com.doucome.chaoexpo.web.bops.action.DevicePushAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/devicePush.vm</result>
+		</action>
+		
+		<action name="device_push_step1" class="com.doucome.chaoexpo.web.bops.action.DevicePushAction" method="step1">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="input" type="velocity">/bops/devicePush.vm</result>
+			<result name="success" type="velocity">/bops/devicePushStep1.vm</result>
+		</action>
+		
+		<action name="device_push_submit" class="com.doucome.chaoexpo.web.bops.action.DevicePushAction" method="submit">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="step0" type="redirect">/bops/device_push.htm</result>
+			<result name="input" type="velocity">/bops/devicePushStep1.vm</result>
+			<result name="success" type="redirect">/bops/device_push_success.htm?successCount=${successCount}</result>
+		</action>
+		
+		<action name="device_push_success" class="com.doucome.chaoexpo.web.bops.action.DevicePushAction">
+			<interceptor-ref name="bopsDefaultStack" />
+			<result name="success" type="velocity">/bops/devicePushSuccess.vm</result>
+		</action>
+	</package>
+	
+	<package name="bops-remote" namespace="/bops/remote" extends="default">
+	
+		<interceptors>
+			 <!-- Basic stack -->
+            <interceptor-stack name="bopsDefaultStack">
+				 <interceptor-ref name="doucomeDefaultStack" />
+				 <interceptor-ref name="setBopsContextInterceptor" />
+				 <interceptor-ref name="bopsAuthzContextInterceptor" />
+			 </interceptor-stack>
+		</interceptors>
+		
+		<action name="upload_local_image" class="com.doucome.chaoexpo.web.bops.action.ajax.BImageUploadAction" method="uploadLocalImage">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		
+		<action name="upload_url_image" class="com.doucome.chaoexpo.web.bops.action.ajax.BImageUploadAction" method="uploadUrlImage">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		
+		<action name="upload_url_image" class="com.doucome.chaoexpo.web.bops.action.ajax.BImageUploadAction" method="uploadUrlImage">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		
+		<action name="query_categories" class="com.doucome.chaoexpo.web.bops.action.ajax.BCategoriesAction">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		
+		<action name="query_subjects" class="com.doucome.chaoexpo.web.bops.action.ajax.BSubjectsAction">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		
+		<action name="reset_news_top" class="com.doucome.chaoexpo.web.bops.action.ajax.BNewsOrderAction" method="resetNewsTop">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		
+		<action name="reset_news_display_order" class="com.doucome.chaoexpo.web.bops.action.ajax.BNewsOrderAction" method="resetNewsDisplayOrder">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		
+		<action name="reset_news_status" class="com.doucome.chaoexpo.web.bops.action.ajax.BNewsStatusAction">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		
+		<action name="reset_news_category_status" class="com.doucome.chaoexpo.web.bops.action.ajax.BCategoryStatusAction">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		
+		<action name="delete_app_recommend_ajax" class="com.doucome.chaoexpo.web.bops.action.ajax.AppRecommendOperateAction" method="delete">
+			<interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json2"></result>
+		</action>
+		
+		<action name="update_culture_status_ajax" class="com.doucome.chaoexpo.web.bops.action.ajax.CultureOperateAction" method="updateStatus">
+			<interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json2"></result>
+		</action>
+		
+		<action name="update_tushuo_status_ajax" class="com.doucome.chaoexpo.web.bops.action.ajax.TushuoOperateAction" method="updateStatus">
+			<interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json2"></result>
+		</action>
+		
+		<action name="update_tushuo_cate_status_ajax" class="com.doucome.chaoexpo.web.bops.action.ajax.TushuoCateOperateAction" method="updateStatus">
+			<interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json2"></result>
+		</action>
+		
+		<action name="update_user_status_ajax" class="com.doucome.chaoexpo.web.bops.action.ajax.UserOperateAction" method="updateStatus">
+			<interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json2"></result>
+		</action>
+		
+		<action name="reset_activity_status" class="com.doucome.chaoexpo.web.bops.action.ajax.BActivityStatusAction">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		<action name="reset_subject_status" class="com.doucome.chaoexpo.web.bops.action.ajax.BSubjectStatusAction">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		<action name="reset_banner_status" class="com.doucome.chaoexpo.web.bops.action.ajax.BBannerStatusAction">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		<action name="reset_activity_can_signup" class="com.doucome.chaoexpo.web.bops.action.ajax.BActivityCanSignupAction">
+		    <interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json"></result>
+		</action>
+		
+		<action name="update_user_comment_status_ajax" class="com.doucome.chaoexpo.web.bops.action.ajax.UserCommentOperateAction" method="updateStatus">
+			<interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json2"></result>
+		</action>
+		
+		<action name="update_activity_top_ajax" class="com.doucome.chaoexpo.web.bops.action.ajax.ActivityOperateAction" method="updateTop">
+			<interceptor-ref name="bopsDefaultStack" />
+		    <result name="success" type="json2"></result>
+		</action>
+	</package>
+</struts>

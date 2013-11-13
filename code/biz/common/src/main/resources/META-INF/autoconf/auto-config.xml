@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="GBK"?>
+<!--
+	- 自动配置描述文件
+	-
+	- @author 
+-->
+<config description="自动配置">
+
+	<group name="common config">
+		<property name="cornerservice.output" description="应用程序的输出目录"  defaultValue="/home/${cornerservice_unix_user}/output"/>
+		<property name="cornerservice.production" description="生产模式"  defaultValue="false">
+			<validator name="choice" choice="true,false"/>
+		</property>
+		<property name="cornerservice.loggingRoot" defaultValue="${cornerservice_output}/logs"  description="日志"></property>
+		<property name="cornerservice.loggingLevel" defaultValue="info"  description="日志输出级别"></property>
+	</group>
+
+	<group name="cache">
+		<property name="cornerservice.memcached.address" defaultValue="42.121.17.63:11211" description="memcached 服务地址，多个用空格隔开"/>
+		<property name="cornerservice.memcached.key.prefix" defaultValue="rel" description="memcached key 的前置值，为了区分开发和线上"/>
+	</group>
+
+	<group name="database">
+		<property name="cornerservice.database.driver.url" description="数据库的url" defaultValue="jdbc:mysql://110.76.47.90:3306/cornerservice_dev?useUnicode=true&amp;characterEncoding=gbk&amp;autoReconnect=true"/>
+		<property name="cornerservice.database.driver.username" description="数据库的username" defaultValue="trek"/>
+		<property name="cornerservice.database.driver.password" description="数据库的password" defaultValue="trek"/>
+	</group>
+	
+	<group name="web">
+		<property name="cornerservice.static.url" defaultValue="http://style.diandianzhe.com/cornerservice" description="static"></property>
+		<property name="cornerservice.domainName" defaultValue="api.diandianzhe.com" description="domain"></property>
+		<property name="cornerservice.port" defaultValue="80" description="port">
+			<validator name="number"></validator>
+		</property>
+		<property name="cornerservice.appserver.port" defaultValue="8080" description="appserver port">
+			<validator name="number"></validator>
+		</property>
+	</group>
+
+	<group name="util">
+		<property name="cornerservice.cookie.entrypt.secretKey" defaultValue="IHsd*0sz." description="cookie加密密钥"></property>
+	</group>
+	
+	<group name="bops">
+		<property name="cornerservice.bops.domainName" defaultValue="bops.dp-app.com" description="bops域名"></property>
+	</group>
+
+	<script>
+		<generate template="struts.xml.vm" destfile="struts.xml" charset="GBK" />
+		<generate template="log4j.xml" destfile="log4j.xml" charset="GBK" />
+		<generate template="commonConfig.properties.vm" destfile="commonConfig.properties" charset="GBK" />
+	</script>
+</config>
+
+

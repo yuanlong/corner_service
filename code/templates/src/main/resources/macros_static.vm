@@ -1,0 +1,27 @@
+#macro(CHAO_JS $libs)
+   #foreach ($key in $libs)
+   #set($version = $staticVerUtils.ver($!key))   
+   <script type="text/javascript" src="${env.staticroot}/js/$!key?v=$!version"></script>
+   #end
+#end
+
+#macro(CHAO_CSS $libs)
+	#foreach ($key in $libs)
+	#set($version = $staticVerUtils.ver($!key))
+	<link  rel="stylesheet" type="text/css" href="${env.staticroot}/css/$!key?v=$!version" />
+	#end
+#end
+
+#macro(BOPS_JS $libs)
+   #foreach ($key in $libs)
+   #set($version = $staticVerUtils.ver($!key))   
+   <script type="text/javascript" src="${env.staticroot}/bops/js/$!key?v=$!version"></script>
+   #end
+#end
+
+#macro(BOPS_CSS $libs)
+	#foreach ($key in $libs)
+	#set($version = $staticVerUtils.ver($!key))
+	<link  rel="stylesheet" type="text/css" href="${env.staticroot}/bops/css/$!key?v=$!version" />
+	#end
+#end

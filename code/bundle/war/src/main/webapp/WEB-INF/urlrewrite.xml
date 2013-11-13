@@ -1,0 +1,9 @@
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+	"http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
+
+<!-- https: // urlrewrite.dev.java.net/manual/3.2 -->
+
+<urlrewrite use-query-string="false" decode-using="header,null">
+	
+</urlrewrite>
+

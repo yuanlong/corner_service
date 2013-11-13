@@ -1,0 +1,17 @@
+#macro(SEARCH_URL $newQuery)
+    #set($combineQuery = $stringUtils.combineQueryArray($searchQuery,$newQuery))
+	#set($_outputUrl = $searchUrl)
+	#foreach($entry in $combineQuery)
+		#set($entry_value  = "")
+		#set($entry_value = $entry.value)
+		#if($velocityCount == 1)
+			#set($_outputUrl = $_outputUrl + $!entry.key + "=" + $entry_value)
+		#else
+			#set($_outputUrl = $_outputUrl + "&" + $!entry.key + "=" + $entry_value)
+		#end
+	#end
+	#if($mark)
+		#set($_outputUrl = $_outputUrl + "&mark="+$mark)
+	#end
+	$_outputUrl
+#end

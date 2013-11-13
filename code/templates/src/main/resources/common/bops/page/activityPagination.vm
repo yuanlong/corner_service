@@ -1,0 +1,16 @@
+<div class="pagination" id="pagination">
+	#parse("/common/bops/_pagination.vm")
+	<form method="get" action="$searchUrl" id="form_page">
+		<input  type="hidden" name="newsId" value="$!newsId" />
+		<input  type="hidden" name="categoryId" value="$!categoryId" />
+		<input  type="hidden" name="keyword" value="$!keyword" />
+		<input type="hidden" name="status" value="$!status"/>
+		<input type="hidden"  name="gmtPublishStart" value="$!gmtPublishStart"/>
+		<input type="hidden" name="gmtPublishEnd" value="$!gmtPublishEnd"/>
+		
+		<div class="page-op">
+    		<span class="total-page">共 $totalPages 页</span>第<input type="text" name="page" value="$!curPage">页
+    		<input type="submit" value="确定">
+    	</div>
+    </form>
+</div>

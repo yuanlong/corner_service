@@ -1,0 +1,35 @@
+<ul class="left_menu">
+    <p><a href="">BOPS管理系统</a></p>
+	<li><a href="javascript:">Back office process system</a>
+		<ul>
+			<li id="query_banner_list"><a href="${env.bopsRoot}/bops/query_banner_list.htm" >Banner管理</a></li>
+			<li id="query_user_list"><a href="${env.bopsRoot}/bops/query_user_list.htm" >用户管理</a></li>
+    	</ul>
+    </li>
+	<li><a href="javascript:">活动/新闻</a>
+		<ul>
+			<li id="activity_list"><a href="${env.bopsRoot}/bops/activity_list.htm" >活动管理</a></li>
+			<li id="subject_list"><a href="${env.bopsRoot}/bops/subject_list.htm" >专题管理</a></li>
+    		<li id="news_list"><a href="${env.bopsRoot}/bops/news_list.htm" >新闻管理</a></li>
+			<li id="news_category_list"><a href="${env.bopsRoot}/bops/news_category_list.htm" >新闻分类管理</a></li>
+    	</ul>
+    </li>
+	<li><a href="javascript:">图说</a>
+		<ul>
+			<li id="tushuo_list"><a href="${env.bopsRoot}/bops/tushuo_list.htm" >图说</a></li>
+			<li id="tushuo_cate_list"><a href="${env.bopsRoot}/bops/tushuo_cate_list.htm" >图说分类</a></li>
+    	</ul>
+    </li>
+	<li><a href="javascript:">介绍和推荐</a>
+		<ul>
+			<li id="app_recommend_list"><a href="${env.bopsRoot}/bops/app_recommend_list.htm" >应用推荐</a></li>
+			<li id="add_intro"><a href="${env.bopsRoot}/bops/add_intro.htm" >潮博会介绍</a></li>
+			<li id="culture_list"><a href="${env.bopsRoot}/bops/culture_list.htm" >文化周边</a></li>
+    	</ul>
+    </li>
+	<li><a href="javascript:">推送</a>
+		<ul>
+			<li id="device_push"><a href="${env.bopsRoot}/bops/device_push.htm" >设备推送</a></li>
+    	</ul>
+    </li>
+</ul>

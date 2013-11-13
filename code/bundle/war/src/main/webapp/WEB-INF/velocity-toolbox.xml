@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbox>
+	<tool>
+		<key>dateUtils</key>
+		<scope>application</scope>
+		<class>com.doucome.corner.service.web.common.toolbox.DateUtilsToolbox</class>
+	</tool>
+	<tool>
+		<key>env</key>
+		<scope>application</scope>
+		<class>com.doucome.corner.service.web.common.toolbox.EnvPropertiesToolbox</class>
+	</tool>
+	
+	<tool>
+		<key>stringUtils</key>
+		<scope>application</scope>
+		<class>com.doucome.corner.service.web.common.toolbox.StringUtilsToolbox</class>
+	</tool>
+	
+	<tool>
+		<key>staticVerUtils</key>
+		<scope>application</scope>
+		<class>com.doucome.corner.service.web.common.toolbox.StaticVersionToolbox</class>
+	</tool>
+
+	<tool>
+		<key>collectionUtils</key>
+		<scope>application</scope>
+		<class>com.doucome.corner.service.web.common.toolbox.CollectionUtilsToolbox</class>
+	</tool>
+	
+	<tool>
+		<key>systemUtils</key>
+		<scope>application</scope>
+		<class>com.doucome.corner.service.biz.core.utils.SystemUtil</class>
+	</tool>
+</toolbox> 

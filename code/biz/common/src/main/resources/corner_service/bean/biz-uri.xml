@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:roma="http://roma.alibaba.com/schema"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://roma.alibaba.com/schema http://roma.alibaba.com/schema/roma-component.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
+			default-autowire="byName">
+
+	<bean id="uriService" class="com.doucome.chaoexpo.biz.core.service.impl.DefaultUriService" lazy-init="false">
+		<property name="uriMappings">
+			<map>
+			    <entry key="chaoServer" value="${chaoexpo.domainName}"/>
+				<entry key="staticServer" value="${chaoexpo.static.url}"/>
+				<entry key="bopsServer" value="http://${chaoexpo.bops.domainName}:${chaoexpo.port}"/>
+				<entry key="bopsLoginLink"  value="http://${chaoexpo.bops.domainName}:${chaoexpo.port}/bops/login.htm" />
+				<entry key="pictureRoot"  value="${chaoexpo.picture.uploaded.img.url}" />
+			</map>
+		</property>
+	</bean>
+</beans>

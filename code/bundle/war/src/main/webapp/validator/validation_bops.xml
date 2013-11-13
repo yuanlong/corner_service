@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forms>
+
+	<form id="appRecommendForm">
+		<item name="appName" dataType="Require" msg="应用名称不为空" /> 
+		<item name="appName" dataType="Limit" max="32" msg="应用名称输入过长" />
+		<item name="androidStoreUrl" dataType="Limit" max="128" msg="安卓市场地址输入过长" />
+		<item name="iosStoreUrl" dataType="Limit" max="128" msg="ios商店地址输入过长" />
+		<item name="wpStoreUrl" dataType="Limit" max="128" msg="WP商店地址输入过长" />
+		<item name="intro" dataType="Require" msg="应用介绍不为空" />
+	</form>
+	
+	<form id="introForm">
+		<item name="hnIntro" dataType="Require" msg="海宁介绍不为空" /> 
+		<item name="hnIntro" dataType="Limit" max="2048" msg="海宁介绍输入过长" />
+		<item name="chaoExpoIntro" dataType="Require" msg="潮博会介绍不为空" />
+		<item name="chaoExpoIntro" dataType="Limit" max="2048" msg="潮博会介绍输入过长" />
+	</form>
+	
+	<form id="cultureForm">
+		<item name="name" dataType="Require" msg="名称不为空" /> 
+		<item name="name" dataType="Limit" max="2048" msg="名称输入过长" />
+		<item name="intro" dataType="Require" msg="介绍不为空" />
+		<item name="intro" dataType="Limit" max="2048" msg="介绍输入过长" />
+	</form>
+	
+	<form id="tushuoForm">
+		<item name="name" dataType="Require" msg="名称不为空" /> 
+		<item name="name" dataType="Limit" max="2048" msg="名称输入过长" />
+		<item name="categoryId" dataType="Require" msg="分类必须选择" /> 		
+		<item name="content" dataType="Require" msg="内容不为空" />
+		<item name="content" dataType="Limit" max="2048" msg="内容输入过长" />
+	</form>
+	
+	<form id="tushuoCateForm">
+		<item name="name" dataType="Require" msg="分类名称不为空" /> 
+		<item name="name" dataType="Limit" max="32" msg="分类名称输入过长" />
+		<item name="intro" dataType="Require" msg="简介不为空" /> 
+		<item name="intro" dataType="Limit" max="2048" msg="简介输入过长" />
+	</form>
+</forms>

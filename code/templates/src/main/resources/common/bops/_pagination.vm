@@ -1,0 +1,84 @@
+######################
+##Parameters : 
+## totalPages : 总页数
+## page : 当前页
+## size ： 页大小
+## keyword : 关键字
+######################
+#set($totalPages = $decimalUtils.createInt($pagination.totalPages))
+#set($page = $decimalUtils.createInt($pagination.page , 1))
+#set($size = $decimalUtils.createInt($pagination.size, 20))
+
+#set($curPage = $page)
+
+#if($curPage < 1)
+	#set($curPage = 1) 
+#elseif($curPage > $totalPages)
+	#set($curPage = $totalPages)
+#end
+
+#set($rangeStart = 1)
+#set($rangeEnd = $totalPages)
+
+#set($prePage = ${curPage} - 1)
+#set($nextPage = ${curPage} + 1)
+
+#if($prePage < 1)
+	#set($prePage = 1) 
+#end
+#if($nextPage > $totalPages)
+	#set($nextPage = $totalPages) 
+#end
+
+
+
+<!--
+	totalPages : $totalPages
+    page : $page
+    size ：$size
+	prePage : $prePage
+	nextPage : $nextPage
+	curPage : $curPage
+-->
+
+<div class="page-bottom">
+	#if($page == 1)
+	<span class="page-end">
+		<span>上一页</span>
+	</span>
+	#else
+		#set($p = "page:" + $prePage)
+	<a href="#SEARCH_URL([$p])" class="page-prev">
+		上一页
+	</a>
+	#end
+	
+	#set($toPage = 0 )
+	#set($_start = $curPage - 3)
+	#if($_start < 1)
+		#set ($_start = 1)
+	#end
+	#foreach($count in [0..5])
+    	#set($toPage = $_start + $count)
+    	#if($toPage>=$rangeStart && $toPage<=$rangeEnd) 
+        	#if($toPage == $curPage)
+        		<span class="page-cur">$toPage</span>
+        	#else
+				#set($p = "page:" + $toPage)
+				<a href="#SEARCH_URL([$p])">$toPage</a>
+    		#end
+    	#end
+	#end
+	
+	#if($toPage < $totalPages)
+	<span class="page-break">...</span>
+	#end
+    #if($curPage == $totalPages)
+	<span class="page-end">
+		<span>下一页</span>
+	</span>
+    #else
+	#set($p = "page:" + $nextPage)
+	<a href="#SEARCH_URL([$p])" >下一页</a>
+    #end
+</div>

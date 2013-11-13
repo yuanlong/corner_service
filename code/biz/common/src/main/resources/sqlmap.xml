@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+    
+<sqlMapConfig>
+	<!--
+      - ===============================================
+      - 打开命名空间
+      - @author 
+      - @date 2009-08-21
+      - ===============================================
+	-->
+    <settings cacheModelsEnabled="true" enhancementEnabled="true" lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000" maxTransactions="3000" useStatementNamespaces="true"/>
+    
+  	<sqlMap resource="chaoexpo/sqlmap/sqlmap-bops-admin.xml" />
+  	
+</sqlMapConfig>

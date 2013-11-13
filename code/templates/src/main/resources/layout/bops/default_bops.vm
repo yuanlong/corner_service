@@ -1,0 +1,43 @@
+
+#set ($title = $page.title)
+#if(!$title||$title=="") 
+	#set ($title="BOPS - back office process system")
+#end
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>$!title</title>
+
+	#BOPS_CSS(["bops.css"])
+	#CHAO_CSS(["../jquery-ui-1.8.21/bundle/themes/base/jquery.ui.all.css"])
+	#CHAO_JS(["lib/jquery-min.js","lib/common.js","../date-picker/WdatePicker.js","lib/json2.js"])
+	#CHAO_JS(["../jquery-ui-1.8.21/bundle/ui/jquery.ui.core.js","../jquery-ui-1.8.21/bundle/ui/jquery.ui.widget.js","../jquery-ui-1.8.21/bundle/ui/jquery.ui.datepicker.js","../jquery-ui-1.8.21/bundle/ui/i18n/jquery-ui-i18n.js"])
+	#if($!bopsCss)
+    #BOPS_CSS($!bopsCss)
+    #end
+</head>
+
+<body>
+	<div id="shadow_bg" class="shadow-bg dd-hide"></div>
+	
+	#parse("/common/bops/top.vm")
+	<table width="100%"   border=0 cellpadding="0" cellspacing="0" topmargin="0" >
+		<tr valign=top>
+			<td id="idMainTab" align="left" style="width: 240px;" >
+					#parse("/common/bops/left_menu.vm")
+			</td>
+			<td>
+				<div style="margin-top:10px;"></div>
+				BOPS >> $!navigation
+					$screen_content
+			</td>
+		</tr>
+	</table>
+	#parse("/common/bops/bottom.vm")
+	
+	#BOPS_JS(["bops.js","validator.js"])
+	#if($!bopsJs)
+    #BOPS_JS($!bopsJs)
+    #end
+</body>
+</html>

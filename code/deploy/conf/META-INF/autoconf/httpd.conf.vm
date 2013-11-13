@@ -1,0 +1,94 @@
+Listen ${cornerservice_port}
+
+ServerRoot "${cornerservice_output}"
+DocumentRoot "${cornerservice_htdocs_home}"
+ServerName ${cornerservice_domainName}
+
+DefaultLanguage cn
+AddDefaultCharset UTF-8
+
+PidFile "${cornerservice_output}/logs/httpd.pid"
+
+User  ${cornerservice_unix_user}
+Group ${cornerservice_unix_user}
+
+Timeout 30
+KeepAlive On
+MaxKeepAliveRequests 500
+KeepAliveTimeout 25
+
+<IfModule worker.c>
+     StartServers     5
+     MaxClients       1024
+     MinSpareThreads  25
+     MaxSpareThreads  75
+     ThreadsPerChild  64
+     ThreadLimit      128
+     ServerLimit      16
+</IfModule>
+
+
+# Assume no memory leaks at all
+MaxRequestsPerChild 20000
+
+LogFormat "%h %{ORIG_CLIENT_IP}i %l %u %t \"%m /%{HOST}i%U%q %H\" %>s %b %D \"%{Referer}i\" \"%{User-Agent}i\"" cookie_log
+CustomLog "|/usr/sbin/cronolog ${cornerservice_output}/logs/cookie_logs/%w_cookie_log" cookie_log
+
+ErrorLog  "${cornerservice_output}/logs/apache_error.log"
+
+<Directory />
+    Options FollowSymLinks
+    AllowOverride None
+    order allow,deny
+    allow from all
+</Directory>
+
+<Directory "${cornerservice_htdocs_home}">
+    Options FollowSymLinks
+    AllowOverride None
+    order allow,deny
+    allow from all
+</Directory>
+
+TypesConfig ${cornerservice_httpdhome}/conf/mime.types
+DefaultType text/plain
+DirectoryIndex index.html
+
+
+NameVirtualHost *
+
+<VirtualHost *>
+    ServerAdmin ${cornerservice_unix_user}
+	DocumentRoot "${cornerservice_htdocs_home}"
+    RewriteEngine on
+		
+</VirtualHost>
+
+SetOutputFilter DEFLATE
+<Location />
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</Location>
+
+#if("${cornerservice_production}" =="true")
+ErrorDocument 404 http://www.diandianzhe.com/zhe/error.htm
+ErrorDocument 509 http://www.diandianzhe.com/zhe/error.htm
+#end
+
+##Include mod_jk's specific configuration file-zgl
+##Include ${cornerservice_deployhome}/conf/mod_jk.conf
+
+##Include mod_proxy
+Include ${cornerservice_deployhome}/conf/mod_proxy.conf
+
+# hide the server info in http header
+ServerTokens Prod
+
+
+<IfModule mod_headers.c>
+        Header set X-Content-Type-Options "nosniff"    
+        Header set X-XSS-protection "1;mode=block"   
+        RequestHeader unset Range
+</IfModule>

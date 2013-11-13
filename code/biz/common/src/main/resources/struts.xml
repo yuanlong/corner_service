@@ -1,0 +1,64 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<!-- Constant -->
+	<constant name="struts.action.extension" value="htm" />
+
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.velocity.toolboxlocation" value="WEB-INF/velocity-toolbox.xml" />
+	<constant name="struts.velocity.configfile" value="WEB-INF/velocity.properties" />
+	<constant name="struts.objectFactory" value="spring"></constant>
+	<constant name="struts.custom.i18n.resources" value="globalMessages" />
+	<include file="struts-default.xml" />
+
+	<package name="default" extends="struts-default">
+
+		<result-types>
+			<result-type name="velocity" class="com.doucome.corner.service.web.common.velocity.VelocityLayoutResult" />
+			<result-type name="json" class="org.apache.struts2.json.JSONResult"></result-type>
+			<result-type name="json2" class="org.apache.struts2.json.JSONResult">
+				<param name="root">json</param>
+			</result-type>
+		</result-types>
+
+		<interceptors>
+					
+			<interceptor name="json"
+				class="org.apache.struts2.json.JSONInterceptor" />
+			
+			<interceptor-stack name="doucomeDefaultStack">
+				<interceptor-ref name="defaultStack">
+					<param name="exception.logEnabled">true</param>  
+    				<param name="exception.logLevel">error</param> 
+				</interceptor-ref>
+			</interceptor-stack>
+			
+			<interceptor-stack name="doucomeBasicStack">
+				<interceptor-ref name="basicStack">
+					<param name="exception.logEnabled">true</param>  
+    				<param name="exception.logLevel">error</param> 
+				</interceptor-ref>
+			</interceptor-stack>
+			
+		</interceptors>
+
+		<global-results>
+			<result name="exception" type="velocity">/zhe/zhe.error/404.vm</result>
+			<result name="adminLogin" type="redirect">/bops/login.htm?Done=${Done}</result>
+			<result name="bopsError" type="velocity">/bops/error.vm</result>
+			<result name="chaoLoginJson" type="redirect">/chao/user/remote/rest/login_json.htm</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping result="exception" exception="java.lang.Exception" />
+		</global-exception-mappings>
+	
+	</package>
+	
+	<include file="struts-home.xml" />
+	<include file="struts-inter.xml" />
+</struts>
