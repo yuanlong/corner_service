@@ -65,7 +65,7 @@ public class DdzAlimamaBO implements DisposableBean {
 	
 	private final static ThreadSafeClientConnManager connManager;
 	
-	private final static String[][] loginInfos = new String[][]{{"ze2200", "Ddch198528", "zh-CN", "1440*900", "macos|10.9", "firefox|24", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0"},
+	private final static String[][] loginInfos = new String[][]{
 										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
 										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
 										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0"},
