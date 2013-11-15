@@ -45,8 +45,12 @@ public class CommissionAction extends InterBasicAction  {
 		this.numIid = numIid;
 	}
 
-	public void setTitle(String title) throws UnsupportedEncodingException {
-		this.title = URLDecoder.decode(title, "utf-8");
+	public void setTitle(String title) {
+		try {
+			this.title = URLDecoder.decode(title, "utf-8");
+		} catch(UnsupportedEncodingException e) {
+			this.title = title;
+		}
 	}
 
 	public void setPrice(BigDecimal price) {

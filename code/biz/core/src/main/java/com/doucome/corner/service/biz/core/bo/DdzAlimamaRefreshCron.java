@@ -21,7 +21,7 @@ public class DdzAlimamaRefreshCron {
 	
 	public void refresh() {
 		try {
-			ddzAlimamaBO.refreshLoginStatus(REFRESH_DEST_URL);
+			ddzAlimamaBO.refreshLoginStatus();
 		} catch (Exception e) {
 			alimamaLogger.error(e);
 		}

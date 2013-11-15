@@ -7,7 +7,7 @@ import org.apache.http.client.HttpClient;
  * @author ze2200
  *
  */
-public class AlimamaLoginHttpClient {
+public class AlimamaHttpClient {
 	
 	private static final long REFRESH_INTERVAL = 5L * 60L * 1000L;
 	
@@ -15,13 +15,12 @@ public class AlimamaLoginHttpClient {
 	
 	private long latestTimestamp;
 	
-	public AlimamaLoginHttpClient(HttpClient httpClient) {
-		this(httpClient, System.currentTimeMillis());
-	}
+	private int loginInfoIdx;
 	
-	public AlimamaLoginHttpClient(HttpClient httpClient, long latestTimestamp) {
+	public AlimamaHttpClient(HttpClient httpClient, int idx) {
 		this.httpClient = httpClient;
-		this.latestTimestamp = latestTimestamp;
+		loginInfoIdx = idx;
+		this.latestTimestamp = System.currentTimeMillis();
 	}
 
 	public HttpClient getHttpClient() {
@@ -36,6 +35,14 @@ public class AlimamaLoginHttpClient {
 		return latestTimestamp;
 	}
 	
+	public int getLoginInfoIdx() {
+		return loginInfoIdx;
+	}
+
+	public void setLoginInfoIdx(int loginInfoIdx) {
+		this.loginInfoIdx = loginInfoIdx;
+	}
+
 	public void refreshTimestamp() {
 		this.latestTimestamp = System.currentTimeMillis();
 	}

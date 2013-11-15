@@ -45,7 +45,7 @@ import org.springframework.beans.factory.DisposableBean;
 
 import com.doucome.corner.service.biz.core.constant.DecimalConstant;
 import com.doucome.corner.service.biz.core.enums.DdzTbItemSourceEnum;
-import com.doucome.corner.service.biz.core.model.AlimamaLoginHttpClient;
+import com.doucome.corner.service.biz.core.model.AlimamaHttpClient;
 import com.doucome.corner.service.biz.core.model.DdzTbItemModel;
 import com.doucome.corner.service.biz.core.utils.DecimalUtils;
 
@@ -59,39 +59,41 @@ public class DdzAlimamaBO implements DisposableBean {
 	
 	private static final Log alimamaLogger = LogFactory.getLog("alimama-log");
 	
-	private static final LinkedBlockingQueue<AlimamaLoginHttpClient> alimamaClients;
+	private String REFRESH_URL = "http://u.alimama.com/union/myunion/myOverview.htm";
+	
+	private static final LinkedBlockingQueue<AlimamaHttpClient> alimamaClients;
 	
 	private final static ThreadSafeClientConnManager connManager;
 	
-	private final static String[][] loginInfos = new String[][]{{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},//
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24"},
-										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"},
-										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969"}};
+	private final static String[][] loginInfos = new String[][]{{"ze2200", "Ddch198528", "zh-CN", "1440*900", "macos|10.9", "firefox|24", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0"},
+										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0"},
+										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0"},
+										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0"},
+										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0"},
+										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},//
+										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0"},
+										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "windows|6.1", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "firefox|24", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0"},
+										{"changshifenbie", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"weiboyn", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"},
+										{"dashabengta", "1qaz2wsx", "zh-CN", "1440*900", "macos|10.9", "chrome|30.0159969", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"}};
 									
 	static {
 		try {
-			alimamaClients = new LinkedBlockingQueue<AlimamaLoginHttpClient>(100);
+			alimamaClients = new LinkedBlockingQueue<AlimamaHttpClient>(100);
 			SSLContext ctx = SSLContext.getInstance("SSL");
 			X509TrustManager sslManager = new X509TrustManager() {
 				@Override
@@ -117,9 +119,9 @@ public class DdzAlimamaBO implements DisposableBean {
 			connManager.setMaxTotal(100);
 			
 			for (int i = 0; i < loginInfos.length; i++) {
-				AlimamaLoginHttpClient loginClient = loginAlimama(connManager, loginInfos[i][0], loginInfos[i][1], loginInfos[i][2], loginInfos[i][3], loginInfos[i][4], loginInfos[i][5]);
+				AlimamaHttpClient loginClient = loginAlimama(connManager, i);
 				if (loginClient == null) {
-					loginClient = loginAlimama(connManager, loginInfos[i][0], loginInfos[i][1], loginInfos[i][2], loginInfos[i][3], loginInfos[i][4], loginInfos[i][5]);
+					loginClient = loginAlimama(connManager, i);
 				}
 				if (loginClient == null) {
 					throw new Exception("---commissionRate can't login alimama");
@@ -141,79 +143,39 @@ public class DdzAlimamaBO implements DisposableBean {
 	 * @return
 	 */
 	public BigDecimal getItemCommissionRate(String numIid, String title) {
+		alimamaLogger.error("---" + title + "/" + numIid);
 		if (StringUtils.isEmpty(title)  || !StringUtils.isNumeric(numIid)) {
 			return null;
 		}
 		long time0 = System.currentTimeMillis();
-		AlimamaLoginHttpClient loginInstance = null;
-		try {
-			loginInstance = alimamaClients.poll(4000, TimeUnit.MILLISECONDS);
-		} catch (InterruptedException e) {
-			alimamaLogger.error("---exception, take httpClient from blocking queue: " + numIid, e);
-		}
-		alimamaLogger.error("----take httpclient time: " + (System.currentTimeMillis() - time0));
+		AlimamaHttpClient loginInstance = pollQueue(4000);
 		if (loginInstance == null) {
 			alimamaLogger.error("---fail, can't get httpClient from blocking queue: " + numIid);
 			return null;
 		}
 		long time1 = System.currentTimeMillis();
-		HttpResponse response = null;
 		try {
-			String html = null;
-			try {
-				HttpClient httpClient = loginInstance.getHttpClient();
-				HttpGet getReq = new HttpGet(getCommissionReqUrl(title));
-				getReq.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-				getReq.addHeader("Accept-Encoding", "gzip,deflate");
-				getReq.addHeader("Connection", "keep-alive");
-				getReq.addHeader("Referer", "http://u.alimama.com/union/spread/selfservice/taokeSearch.htm");
-				getReq.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Firefox/24.0");
-				response = httpClient.execute(getReq);
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode != 200) {
-					alimamaLogger.error("---fail, request commission form response status: " + statusCode + "/" + numIid);
-					logoutAlimama(httpClient);
-					loginInstance = null;
-					new Thread() {
-						@Override
-						public void run() {
-							int idx = new Random(System.currentTimeMillis()).nextInt(loginInfos.length);
-							AlimamaLoginHttpClient loginClient = loginAlimama(connManager, loginInfos[idx][0], loginInfos[idx][1], loginInfos[idx][2], loginInfos[idx][3], loginInfos[idx][4], loginInfos[idx][5]);
-							if (loginClient != null) {
-								try {
-									alimamaClients.put(loginClient);
-								} catch (Exception e) {
-									alimamaLogger.error("---exception, async put relogin htttClient to blockingqueue", e);
-								}
-							} else {
-								alimamaLogger.error("---fail, async relogin alimama fail");
-							}
-						}
-					}.start();
-					return null;
-				}
-				String contentEncode = response.getFirstHeader("Content-Encoding").getValue();
-				if (contentEncode.toLowerCase().indexOf("gzip") != -1) {
-					html = getHtmlFromGzip(response.getEntity(), "gbk");
-				} else {
-					html = EntityUtils.toString(response.getEntity(), "GBK");
-				}
-				if (StringUtils.isEmpty(html)) {
-					alimamaLogger.error("---fail, can't read html from commission form response: " + numIid);
-					return null;
-				}
-			} catch (Exception e) {
-				throw e;
-			} finally {
-				if (loginInstance != null) {
-					try {
-						loginInstance.refreshTimestamp();
-						alimamaClients.put(loginInstance);
-					} catch (InterruptedException e) {
-						alimamaLogger.error("------exception, put httpClient to blockingqueue exception: " + numIid, e);
+			String html = requestCommForm(loginInstance, title);
+			if (StringUtils.isEmpty(html)) {
+				//异步刷新链接.
+				new Thread() {
+					@Override
+					public void run() {
+						refreshLoginStatus();
 					}
+				}.start();
+				//尝试重新登录后获取数据.
+				int idx = new Random(System.currentTimeMillis()).nextInt(loginInfos.length);
+				loginInstance = loginAlimama(connManager, idx);
+				if (loginInstance == null) {
+					alimamaLogger.error("fail, re request comm form when instance new login fail");
+					return null;
 				}
-				consumeResponse(response);
+				html = requestCommForm(loginInstance, title);
+			}
+			if (StringUtils.isEmpty(html)) {
+				alimamaLogger.error("---fail, can't read html from commission form response");
+				return null;
 			}
 			alimamaLogger.error("---request commission form total time: " + (System.currentTimeMillis() - time1));
 			time1 = System.currentTimeMillis();
@@ -222,6 +184,10 @@ public class DdzAlimamaBO implements DisposableBean {
 			return commRate;
 		} catch (Exception e) {
 			alimamaLogger.error("---get commission rate from alimama exception", e);
+		} finally {
+			if (loginInstance != null) {
+				putQueue(loginInstance);
+			}
 		}
 		return null;
 	}
@@ -249,17 +215,22 @@ public class DdzAlimamaBO implements DisposableBean {
 		return itemModel;
 	}
 	
-	
-	public void refreshLoginStatus(String destUrl) {
+	/**
+	 * 刷新，保持登录状态.
+	 * 
+	 * 
+	 */
+	public void refreshLoginStatus() {
 		long time1 = System.currentTimeMillis();
-		AlimamaLoginHttpClient alimamaClient = null;
-		for (int i = 0; i < 80; i++) {
+		AlimamaHttpClient alimamaClient = null;
+		int size = alimamaClients.size();
+		for (int i = 0; i < size; i++) {
 			try {
 				alimamaClient = pollQueue(2000);
-				if (alimamaClient == null && alimamaClients.size() < 60) {
+				//获取不到，表明并发较多，新初始化部分client.
+				if (alimamaClient == null && alimamaClients.size() < 40) {
 					int idx = new Random(System.currentTimeMillis()).nextInt(loginInfos.length);
-					alimamaClient = loginAlimama(connManager, loginInfos[idx][0], loginInfos[idx][1], loginInfos[idx][2],
-					                            loginInfos[idx][3], loginInfos[idx][4], loginInfos[idx][5]);
+					alimamaClient = loginAlimama(connManager, idx);
 					if (alimamaClient != null) {
 						continue;
 					}
@@ -268,14 +239,17 @@ public class DdzAlimamaBO implements DisposableBean {
 					alimamaLogger.error("---refresh fail, can't get client from queue");
 					continue;
 				}
-				if (!alimamaClient.needRefresh()) {
-					alimamaLogger.error("---refresh none, client is active");
-					break;
-				}
+//				if (!alimamaClient.needRefresh()) {
+//					alimamaLogger.error("---refresh none, client is active");
+//					continue;
+//				}
 				int statusCode = 0;
 				HttpResponse response = null;
 				try {
-					HttpGet getReq = new HttpGet(destUrl);
+					HttpGet getReq = new HttpGet(REFRESH_URL);
+					getReq.addHeader("Accept-Encoding", "gzip,deflate,sdch");
+					getReq.addHeader("Referer", "http://u.alimama.com/union/spread/common/guide.htm");
+					getReq.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36");
 					response = alimamaClient.getHttpClient().execute(getReq);
 					statusCode = response.getStatusLine().getStatusCode();
 				} catch (Exception e) {
@@ -286,8 +260,7 @@ public class DdzAlimamaBO implements DisposableBean {
 				if (statusCode != 200) {
 					alimamaClient = null;
 					int idx = new Random(System.currentTimeMillis()).nextInt(loginInfos.length);
-					alimamaClient = loginAlimama(connManager, loginInfos[idx][0], loginInfos[idx][1], loginInfos[idx][2],
-					                            loginInfos[idx][3], loginInfos[idx][4], loginInfos[idx][5]);
+					alimamaClient = loginAlimama(connManager, idx);
 					if (alimamaClient == null) {
 						alimamaLogger.error("---refresh fail, inactive httpclient relogin fail");	
 					} else {
@@ -303,7 +276,44 @@ public class DdzAlimamaBO implements DisposableBean {
 		alimamaLogger.error("---refresh consume: " + (System.currentTimeMillis() - time1));
 	}
 	
-	private AlimamaLoginHttpClient pollQueue(long millTime) {
+	/**
+	 * 
+	 * 
+	 */
+	private String requestCommForm(AlimamaHttpClient alimamaClient, String title) {
+		HttpResponse response = null;
+		try {
+			int loginIdx = alimamaClient.getLoginInfoIdx();
+			String userAgent = loginInfos[loginIdx][6];
+			
+			HttpClient httpClient = alimamaClient.getHttpClient();
+			HttpGet getReq = new HttpGet(getCommissionReqUrl(title));
+			getReq.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+			getReq.addHeader("Accept-Encoding", "gzip,deflate");
+			getReq.addHeader("Connection", "keep-alive");
+			getReq.addHeader("Referer", "http://u.alimama.com/union/spread/selfservice/taokeSearch.htm");
+			getReq.addHeader("User-Agent", userAgent);
+			response = httpClient.execute(getReq);
+			int statusCode= response.getStatusLine().getStatusCode();
+			if (statusCode != 200) {
+				alimamaLogger.error("---fail, request commission form response status: " + statusCode);
+				return null;
+			}
+			String contentEncode = response.getFirstHeader("Content-Encoding").getValue();
+			if (contentEncode.toLowerCase().indexOf("gzip") != -1) {
+				return getHtmlFromGzip(response.getEntity(), "gbk");
+			} else {
+				return EntityUtils.toString(response.getEntity(), "GBK");
+			}
+		} catch (Exception e) {
+			alimamaLogger.error(e);
+		} finally {
+			consumeResponse(response);
+		}
+		return null;
+	}
+	
+	private AlimamaHttpClient pollQueue(long millTime) {
 		try {
 			return alimamaClients.poll(millTime, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException e) {
@@ -312,7 +322,7 @@ public class DdzAlimamaBO implements DisposableBean {
 		return null;
 	}
 	
-	private boolean putQueue(AlimamaLoginHttpClient alimamaClient) {
+	private boolean putQueue(AlimamaHttpClient alimamaClient) {
 		if (alimamaClient != null) {
 			try {
 				alimamaClient.refreshTimestamp();
@@ -384,7 +394,7 @@ public class DdzAlimamaBO implements DisposableBean {
 	}
 	
 	private BigDecimal parseCommissionRateFromTr(String trHtml) {
-		String commReg = "<td[\\s\\S]*?>[\\s\\S]*?(\\d+(.\\d*)?)\\s*%[\\s\\S]*?</td>";
+		String commReg = "<td[\\s\\S]*?>[\\s\\S]*?(\\d+(.\\d*)?)\\s*%\\s*?</td>";
 		Matcher matcher = Pattern.compile(commReg).matcher(trHtml);
 		for (int i = 0; i < 3 && matcher.find(); i++) {
 			String rateStr = matcher.group(1);
@@ -444,8 +454,7 @@ public class DdzAlimamaBO implements DisposableBean {
 	 * @param naviVer
 	 * @return
 	 */
-	private static AlimamaLoginHttpClient loginAlimama(ThreadSafeClientConnManager connManager, String userName, String password,
-			 String oslanguage, String sr, String osVer, String naviVer) {
+	private static AlimamaHttpClient loginAlimama(ThreadSafeClientConnManager connManager, int idx) {
 		HttpClient httpClient = newHttpClient(false);
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		String html = null;
@@ -476,7 +485,7 @@ public class DdzAlimamaBO implements DisposableBean {
 			//taobao login, get the form data
 			getReq = new HttpGet("https://login.taobao.com/member/login.jhtml?style=minisimple&from=alimama&redirectURL=http%3A%2F%2Flogin.taobao.com%2Fmember%2Ftaobaoke%2Flogin.htm%3Fis_login%3d1&full_redirect=true&disableQuickLogin=true");
 			getReq.addHeader("Referer", "http://www.alimama.com/member/login.htm");
-			getReq.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Firefox/24.0");
+			getReq.addHeader("User-Agent", loginInfos[idx][6]);
 			response = httpClient.execute(getReq);
 			if (response.getStatusLine().getStatusCode() != 200) {
 				alimamaLogger.error("request taobao login index failed, status code: " + response.getStatusLine().getStatusCode());
@@ -487,20 +496,20 @@ public class DdzAlimamaBO implements DisposableBean {
 			
 			getReq = new HttpGet("https://log.mmstat.com/member.2.1.2?ok=1");
 			getReq.addHeader("Referer", "https://login.taobao.com/member/login.jhtml?style=minisimple&from=alimama&redirectURL=http%3A%2F%2Flogin.taobao.com%2Fmember%2Ftaobaoke%2Flogin.htm%3Fis_login%3d1&full_redirect=true&disableQuickLogin=true");
-			getReq.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Firefox/24.0");
+			getReq.addHeader("User-Agent", loginInfos[idx][6]);
 			response = httpClient.execute(getReq);
 			consumeResponse(response);
 			getReq = new HttpGet("https://log.mmstat.com/member.2.1.4");
 			getReq.addHeader("Referer", "https://login.taobao.com/member/login.jhtml?style=minisimple&from=alimama&redirectURL=http%3A%2F%2Flogin.taobao.com%2Fmember%2Ftaobaoke%2Flogin.htm%3Fis_login%3d1&full_redirect=true&disableQuickLogin=true");
-			getReq.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Firefox/24.0");
+			getReq.addHeader("User-Agent", loginInfos[idx][6]);
 			response = httpClient.execute(getReq);
 			consumeResponse(response);
 			
 			//params.add(new BasicNameValuePair("ua", parseFieldValue(html, "ua")));
 			params.add(new BasicNameValuePair("umto", parseFieldValue(html, "umto")));
 			params.add(new BasicNameValuePair("gvfdcre", parseFieldValue(html, "gvfdcre")));
-			params.add(new BasicNameValuePair("TPL_username", userName));
-			params.add(new BasicNameValuePair("TPL_password", password));
+			params.add(new BasicNameValuePair("TPL_username", loginInfos[idx][0]));
+			params.add(new BasicNameValuePair("TPL_password", loginInfos[idx][1]));
 			params.add(new BasicNameValuePair("TPL_checkcode", ""));
 			params.add(new BasicNameValuePair("need_check_code", ""));
 			params.add(new BasicNameValuePair("loginsite", "0"));
@@ -531,14 +540,14 @@ public class DdzAlimamaBO implements DisposableBean {
 			params.add(new BasicNameValuePair("gvfdcname", "10"));
 			params.add(new BasicNameValuePair("from_encoding", ""));
 			params.add(new BasicNameValuePair("sub", ""));
-			params.add(new BasicNameValuePair("oslanguage", oslanguage));
-			params.add(new BasicNameValuePair("sr", sr));
-			params.add(new BasicNameValuePair("osVer", osVer));
-			params.add(new BasicNameValuePair("naviVer", naviVer));
+			params.add(new BasicNameValuePair("oslanguage", loginInfos[idx][2]));
+			params.add(new BasicNameValuePair("sr", loginInfos[idx][3]));
+			params.add(new BasicNameValuePair("osVer", loginInfos[idx][4]));
+			params.add(new BasicNameValuePair("naviVer", loginInfos[idx][5]));
 			HttpPost postReq = new HttpPost("https://login.taobao.com/member/login.jhtml");
 			postReq.addHeader("Origin", "https://login.taobao.com");
 			postReq.addHeader("Referer", "https://login.taobao.com/member/login.jhtml?style=minisimple&from=alimama&redirectURL=http%3A%2F%2Flogin.taobao.com%2Fmember%2Ftaobaoke%2Flogin.htm%3Fis_login%3d1&full_redirect=true&disableQuickLogin=true");
-			postReq.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Firefox/24.0");
+			postReq.addHeader("User-Agent", loginInfos[idx][6]);
 			postReq.setEntity(new UrlEncodedFormEntity(params));
 			response = httpClient.execute(postReq);
 			if (response.getStatusLine().getStatusCode() != 200) {
@@ -558,7 +567,7 @@ public class DdzAlimamaBO implements DisposableBean {
 			}
 			getReq = new HttpGet(reqUrl);
 			getReq.addHeader("Referer", "	https://login.taobao.com/member/login.jhtml");
-			getReq.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Firefox/24.0");
+			getReq.addHeader("User-Agent", loginInfos[idx][6]);
 			response = httpClient.execute(getReq);
 			int statusCode = response.getStatusLine().getStatusCode();
 			consumeResponse(response);
@@ -566,7 +575,7 @@ public class DdzAlimamaBO implements DisposableBean {
 				while(statusCode == 302) {
 					reqUrl = response.getFirstHeader("Location").getValue();
 					getReq = new HttpGet(reqUrl);
-					getReq.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Firefox/24.0");
+					getReq.addHeader("User-Agent", loginInfos[idx][6]);
 					response = httpClient.execute(getReq);
 					statusCode = response.getStatusLine().getStatusCode();
 					consumeResponse(response);
@@ -574,11 +583,11 @@ public class DdzAlimamaBO implements DisposableBean {
 			} else {
 				reqUrl = "http://www.alimama.com/index.htm";
 				getReq = new HttpGet(reqUrl);
-				getReq.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Firefox/24.0");
+				getReq.addHeader("User-Agent", loginInfos[idx][6]);
 				response = httpClient.execute(getReq);
 				consumeResponse(response);
 			}
-			return new AlimamaLoginHttpClient(httpClient);
+			return new AlimamaHttpClient(httpClient, idx);
 		} catch (Exception e) {
 			alimamaLogger.error("alimama taobao login exception", e);
 		} finally {
@@ -604,11 +613,13 @@ public class DdzAlimamaBO implements DisposableBean {
 		return "";
 	}
 	
-	private boolean logoutAlimama(HttpClient httpClient) {
-		HttpGet getRequest = new HttpGet("http://www.alimama.com/union/logout.htm?spm=0.0.0.0.X9uNrD");
+	private boolean logoutAlimama(AlimamaHttpClient alimamaClient) {
+		HttpGet getReq = new HttpGet("http://www.alimama.com/member/logout.htm?forward=http://u.alimama.com");
+		getReq.addHeader("Referer", "http://u.alimama.com/union/myunion/myOverview.htm");
+		getReq.addHeader("User-Agent", loginInfos[alimamaClient.getLoginInfoIdx()][6]);
 		HttpResponse response = null;
 		try {
-			response = httpClient.execute(getRequest);
+			response = alimamaClient.getHttpClient().execute(getReq);
 		} catch (Exception e) {
 			alimamaLogger.error("logout alimama error", e);
 		} finally {
@@ -631,9 +642,9 @@ public class DdzAlimamaBO implements DisposableBean {
 	@Override
 	public void destroy() throws Exception {
 		try {
-			AlimamaLoginHttpClient alimamaClient = alimamaClients.poll();
+			AlimamaHttpClient alimamaClient = alimamaClients.poll();
 			while(alimamaClient != null) {
-				logoutAlimama(alimamaClient.getHttpClient());
+				logoutAlimama(alimamaClient);
 				alimamaClient = alimamaClients.poll();
 			}
 		} finally {
@@ -660,15 +671,15 @@ public class DdzAlimamaBO implements DisposableBean {
 //				"秋款格子襯衫女長袖韓版複古文藝棉麻學院風寬松打底襯衣森女日系",
 //				"嫣然之姿2013秋冬通勤複古撞色新款包臀修身高檔針織羊毛連衣裙女"};
 		DdzAlimamaBO ddzLoginBO = new DdzAlimamaBO();
-//		BigDecimal commRate = ddzLoginBO.getItemCommissionRate("35258234134", "2013秋同步款 HIM汉崇正品 流行时尚男士小脚牛仔裤 70539202BL", 0);
-//		System.out.println(commRate);
-		DdzTbItemModel item = ddzLoginBO.getTbItemInfo("35303350378", DdzTbItemSourceEnum.TMALL);
-		if (item != null) {
-			//379.00
-			System.out.println(item.getTitle() + "/" + item.getPrice() + "/" + item.getPicUrl());
-		} else {
-			System.out.println("fail");
-		}
+		BigDecimal commRate = ddzLoginBO.getItemCommissionRate("35020288824", "太平鳥2013冬裝外套 男士短款亮色羽絨服/90%含絨量80812486811");
+		System.out.println(commRate);
+//		DdzTbItemModel item = ddzLoginBO.getTbItemInfo("35303350378", DdzTbItemSourceEnum.TMALL);
+//		if (item != null) {
+//			//379.00
+//			System.out.println(item.getTitle() + "/" + item.getPrice() + "/" + item.getPicUrl());
+//		} else {
+//			System.out.println("fail");
+//		}
 //		item = ddzLoginBO.getTbItemInfo("35769810773", DdzTbItemSourceEnum.TAOBAO);
 //		if (item != null) {
 //			//399.00
